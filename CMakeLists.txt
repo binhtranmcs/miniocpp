@@ -5,13 +5,12 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
-
 find_package(OpenSSL REQUIRED)
-find_package(curlpp CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(pugixml CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
+
+add_subdirectory(curlpp)
 
 set(minio_cpp_src
         src/args.cc
@@ -40,11 +39,10 @@ target_include_directories(miniocpp
         SYSTEM PUBLIC "src/")
 
 list(APPEND MINIO_CPP_LIBS
-        curlpp curl
+        curlpp
         nlohmann_json::nlohmann_json
         pugixml
         OpenSSL::SSL OpenSSL::Crypto
-        ZLIB::ZLIB
-)
+        ZLIB::ZLIB)
 
 target_link_libraries(miniocpp PUBLIC ${MINIO_CPP_LIBS})
